@@ -1,12 +1,18 @@
-import { useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import WeddingInvitation from "./WeddingInvitation";
 import "./OpeningCard.css";
 
 function App() {
   const [isOpening, setIsOpening] = useState(true);
   const [isLeavingCover, setIsLeavingCover] = useState(false);
+  const musicStarterRef = useRef(null);
+
+  const setMusicStarter = useCallback((starter) => {
+    musicStarterRef.current = starter;
+  }, []);
 
   const openInvitation = () => {
+    musicStarterRef.current?.();
     setIsLeavingCover(true);
     window.setTimeout(() => {
       setIsOpening(false);
@@ -37,7 +43,7 @@ function App() {
           </div>
         </section>
       )}
-      <WeddingInvitation />
+      <WeddingInvitation onMusicReady={setMusicStarter} />
     </div>
   );
 }
