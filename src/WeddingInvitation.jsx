@@ -16,7 +16,8 @@ const FULL_ALBUM_PHOTOS = IMAGE_FILENAMES.map((filename, index) => ({
   url: LOCAL_WEDDING_IMAGES[`./assets/img/${filename}`],
   title: PHOTO_TITLES[index] ?? `Khoảnh khắc ${index + 1}`,
 })).filter((photo) => photo.url);
-const INITIAL_COUPLE_PHOTOS = FULL_ALBUM_PHOTOS.slice(4, 7);
+// Hiển thị 5 khoảnh khắc tại phần lời mời (anh3 đến anh7).
+const INITIAL_COUPLE_PHOTOS = FULL_ALBUM_PHOTOS.slice(2, 7);
 
 export default function WeddingInvitation({ onMusicReady }) {
   const musicPlayerRef = useRef(null);
@@ -64,7 +65,7 @@ export default function WeddingInvitation({ onMusicReady }) {
   return <div className="min-h-screen bg-[#FAF6F0] text-[#3D3429] font-sans relative selection:bg-[#E2C799] selection:text-white">
     <style>{`.font-calligraphy{font-family:'Great Vibes',cursive}.font-signature{font-family:'Alex Brush',cursive}.font-serif-custom{font-family:'Playfair Display',serif}`}</style>
     <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden opacity-25"><div className="absolute -top-10 left-1/4 w-72 h-72 rounded-full bg-[#E8C5C8] blur-3xl animate-pulse" /><div className="absolute bottom-10 right-1/4 w-96 h-96 rounded-full bg-[#E2C799] blur-3xl animate-pulse delay-1000" /></div>
-    <iframe ref={musicPlayerRef} onLoad={() => { if (isMusicRequestedRef.current) startMusic(); }} className="fixed w-px h-px opacity-0 pointer-events-none" title="Em Đồng Ý (I Do) — Đức Phúc x 911" src="https://www.youtube-nocookie.com/embed/IOe0tNoUGv8?autoplay=0&enablejsapi=1&playsinline=1&rel=0&loop=1&playlist=IOe0tNoUGv8" allow="autoplay; encrypted-media" />
+    <iframe ref={musicPlayerRef} onLoad={() => { if (isMusicRequestedRef.current) startMusic(); }} className="fixed w-px h-px opacity-0 pointer-events-none" title="Mãi Mãi Bên Nhau — Noo Phước Thịnh" src="https://www.youtube-nocookie.com/embed/lFnR-K5n_dM?autoplay=0&enablejsapi=1&playsinline=1&rel=0&loop=1&playlist=lFnR-K5n_dM" allow="autoplay; encrypted-media" />
     <HeroBanner timeLeft={timeLeft} heroImage={FULL_ALBUM_PHOTOS[0]?.url} />
     <FamilyInformation />
     <InvitationGallery photos={INITIAL_COUPLE_PHOTOS} onSelectImage={setSelectedImg} />

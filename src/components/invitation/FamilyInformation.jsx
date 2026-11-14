@@ -8,8 +8,8 @@ export default function FamilyInformation() {
             "Yêu thương là cùng nhìn về một hướng"
           </span>
           <p className="text-stone-600 text-sm md:text-base italic max-w-xl mx-auto leading-relaxed">
-            Được sự chấp thuận của hai bên gia đình, chúng tôi hạnh phúc được
-            nắm tay nhau bước vào chặng đường mới.
+            Hỡi người làm chồng, hãy yêu vợ mình, như Đức Ki-tô đã yêu Hội
+            thánh, phó chính mình vì Hội thánh
           </p>
           <div className="w-16 h-[2px] bg-[#E2C799] mx-auto mt-4"></div>
         </div>
