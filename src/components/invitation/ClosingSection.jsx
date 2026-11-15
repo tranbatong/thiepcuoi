@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Gift, Camera } from "lucide-react";
 
-export default function ClosingSection({ photos, onSelectImage, onOpenQr }) {
+export default function ClosingSection({ photos, onSelectImage, onOpenBrideQr, onOpenGroomQr }) {
   const [activePhoto, setActivePhoto] = useState(0);
 
   useEffect(() => {
@@ -29,12 +29,18 @@ export default function ClosingSection({ photos, onSelectImage, onOpenQr }) {
               chú rể và cô dâu qua mã QR dưới đây:
             </p>
 
-            <div className="flex justify-center pt-2">
+            <div className="flex flex-col justify-center gap-3 pt-2 sm:flex-row">
               <button
-                onClick={onOpenQr}
+                onClick={onOpenBrideQr}
                 className="px-7 py-3 bg-[#FDF0F0] border border-[#E8C5C8] text-[#C87D87] rounded-xl hover:bg-[#C87D87] hover:text-white transition-colors text-xs font-semibold tracking-wider uppercase"
               >
-                Gửi Mừng Cưới
+                Gửi Mừng Cô Dâu
+              </button>
+              <button
+                onClick={onOpenGroomQr}
+                className="rounded-xl border border-[#B8D4C1] bg-[#EDF4F0] px-7 py-3 text-xs font-semibold uppercase tracking-wider text-[#5B856D] transition-colors hover:bg-[#5B856D] hover:text-white"
+              >
+                Gửi Mừng Chú Rể
               </button>
             </div>
           </div>
