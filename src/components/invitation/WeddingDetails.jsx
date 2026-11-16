@@ -28,6 +28,8 @@ export default function WeddingDetails({
   rsvpData,
   setRsvpData,
   rsvpSubmittedFor,
+  rsvpSubmittingFor,
+  rsvpError,
   onSubmit,
   onReset,
 }) {
@@ -69,6 +71,8 @@ export default function WeddingDetails({
               rsvpData={rsvpData}
               setRsvpData={setRsvpData}
               submitted={rsvpSubmittedFor === party.id}
+              submitting={rsvpSubmittingFor === party.id}
+              error={rsvpError?.partySide === party.id ? rsvpError.message : null}
               onSubmit={onSubmit}
               onReset={onReset}
             />

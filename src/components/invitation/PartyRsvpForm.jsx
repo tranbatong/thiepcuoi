@@ -1,6 +1,6 @@
 import { CheckCircle2, Send } from 'lucide-react';
 
-export default function PartyRsvpForm({ party, rsvpData, setRsvpData, submitted, onSubmit, onReset }) {
+export default function PartyRsvpForm({ party, rsvpData, setRsvpData, submitted, submitting, error, onSubmit, onReset }) {
   const update = (field, value) => setRsvpData({ ...rsvpData, [field]: value, partySide: party.id });
   const formStyle = { borderColor: party.border };
 
@@ -26,6 +26,7 @@ export default function PartyRsvpForm({ party, rsvpData, setRsvpData, submitted,
       <select value={rsvpData.guests} onChange={(event) => update('guests', event.target.value)} className="min-w-0 px-3 py-3 rounded-xl border border-stone-200 text-sm bg-white"><option value="1">1 người</option><option value="2">2 người</option><option value="3">3 người</option><option value="4">4+ người</option></select>
     </div>
     <textarea rows={2} placeholder="Lời chúc gửi tới đôi bạn" value={rsvpData.wishes} onChange={(event) => update('wishes', event.target.value)} className="w-full px-4 py-3 rounded-xl border border-stone-200 text-sm focus:outline-none focus:ring-2" style={{ '--tw-ring-color': party.accent }} />
-    <button type="submit" className="w-full py-3 text-white rounded-xl font-medium text-sm tracking-wide flex items-center justify-center gap-2 shadow-sm" style={{ backgroundColor: party.accent }}><Send className="w-4 h-4" />Gửi Xác Nhận</button>
+    {error && <p className="text-sm text-red-600" role="alert">{error}</p>}
+    <button type="submit" disabled={submitting} className="w-full py-3 text-white rounded-xl font-medium text-sm tracking-wide flex items-center justify-center gap-2 shadow-sm disabled:cursor-not-allowed disabled:opacity-70" style={{ backgroundColor: party.accent }}><Send className="w-4 h-4" />{submitting ? 'Đang gửi...' : 'Gửi Xác Nhận'}</button>
   </form>;
 }

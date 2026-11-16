@@ -19,6 +19,8 @@ const FULL_ALBUM_PHOTOS = IMAGE_FILENAMES.map((filename, index) => ({
 })).filter((photo) => photo.url);
 // Hiển thị 5 khoảnh khắc tại phần lời mời (anh3 đến anh7).
 const INITIAL_COUPLE_PHOTOS = FULL_ALBUM_PHOTOS.slice(2, 7);
+const RSVP_RECIPIENT_EMAIL = 'tongxayda00@gmail.com';
+const FORMSUBMIT_URL = `https://formsubmit.co/ajax/${RSVP_RECIPIENT_EMAIL}`;
 
 export default function WeddingInvitation({ onMusicReady }) {
   const musicPlayerRef = useRef(null);
@@ -26,6 +28,8 @@ export default function WeddingInvitation({ onMusicReady }) {
   const [selectedImg, setSelectedImg] = useState(null);
   const [qrRecipient, setQrRecipient] = useState(null);
   const [rsvpSubmittedFor, setRsvpSubmittedFor] = useState(null);
+  const [rsvpSubmittingFor, setRsvpSubmittingFor] = useState(null);
+  const [rsvpError, setRsvpError] = useState(null);
   const [rsvpData, setRsvpData] = useState({ name: '', phone: '', attending: 'yes', partySide: 'groom_party', guests: '1', wishes: '' });
   const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
 
@@ -57,10 +61,35 @@ export default function WeddingInvitation({ onMusicReady }) {
     return () => onMusicReady(null);
   }, [onMusicReady, startMusic]);
 
-  const handleRsvpSubmit = (event, partySide) => {
+  const handleRsvpSubmit = async (event, partySide) => {
     event.preventDefault();
-    setRsvpData((data) => ({ ...data, partySide }));
-    setRsvpSubmittedFor(partySide);
+    const submission = { ...rsvpData, partySide };
+    setRsvpSubmittingFor(partySide);
+    setRsvpError(null);
+
+    try {
+      const response = await fetch(FORMSUBMIT_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify({
+          _subject: `Phản hồi tham dự — ${partySide === 'bride_party' ? 'Nhà gái' : 'Nhà trai'}`,
+          'Họ và tên': submission.name,
+          'Số điện thoại': submission.phone || 'Không cung cấp',
+          'Phản hồi': submission.attending === 'yes' ? 'Sẽ tham dự' : 'Không thể tham dự',
+          'Số người tham dự': submission.attending === 'yes' ? submission.guests : '0',
+          'Lời chúc': submission.wishes || 'Không có',
+          'Đăng ký cho': partySide === 'bride_party' ? 'Nhà gái' : 'Nhà trai',
+        }),
+      });
+
+      if (!response.ok) throw new Error('Không thể gửi phản hồi');
+      setRsvpData(submission);
+      setRsvpSubmittedFor(partySide);
+    } catch {
+      setRsvpError({ partySide, message: 'Chưa thể gửi phản hồi. Vui lòng kiểm tra kết nối và thử lại.' });
+    } finally {
+      setRsvpSubmittingFor(null);
+    }
   };
 
   return <div className="min-h-screen bg-[#FAF6F0] text-[#3D3429] font-sans relative selection:bg-[#E2C799] selection:text-white">
@@ -70,7 +99,7 @@ export default function WeddingInvitation({ onMusicReady }) {
     <HeroBanner timeLeft={timeLeft} heroImage={FULL_ALBUM_PHOTOS[0]?.url} />
     <FamilyInformation />
     <InvitationGallery photos={INITIAL_COUPLE_PHOTOS} onSelectImage={setSelectedImg} />
-    <WeddingDetails rsvpData={rsvpData} setRsvpData={setRsvpData} rsvpSubmittedFor={rsvpSubmittedFor} onSubmit={handleRsvpSubmit} onReset={() => setRsvpSubmittedFor(null)} />
+    <WeddingDetails rsvpData={rsvpData} setRsvpData={setRsvpData} rsvpSubmittedFor={rsvpSubmittedFor} rsvpSubmittingFor={rsvpSubmittingFor} rsvpError={rsvpError} onSubmit={handleRsvpSubmit} onReset={() => { setRsvpSubmittedFor(null); setRsvpError(null); }} />
     <LocationMaps />
     <ClosingSection
       photos={FULL_ALBUM_PHOTOS}
